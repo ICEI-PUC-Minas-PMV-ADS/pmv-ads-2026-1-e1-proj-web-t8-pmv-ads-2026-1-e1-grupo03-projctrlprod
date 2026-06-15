@@ -1,36 +1,50 @@
+
+function registrarAcaoManuf(aba, acao) {
+    const usuario = localStorage.getItem('usuarioNome') || 'Desconhecido';
+    const agora = new Date();
+    const dataHora = agora.toLocaleDateString('pt-BR') + ' ' + agora.toLocaleTimeString('pt-BR');
+    let log = JSON.parse(localStorage.getItem('logAcoes')) || [];
+    log.push({ usuario, aba, acao, dataHora, ts: agora.getTime() });
+    localStorage.setItem('logAcoes', JSON.stringify(log));
+}
+
 window.onload = function () {
-    // Recupera os valores do localStorage
     const nomeSalvo = localStorage.getItem('usuarioNome');
-    const catSalva = localStorage.getItem('usuarioCat');
+    const catSalva  = localStorage.getItem('usuarioCat');
+    document.getElementById('display-user').innerText     = nomeSalvo || 'Convidado';
+    document.getElementById('display-category').innerText = catSalva  || 'N/A';
 
-    // Seleciona os elementos e atualiza o texto
-    document.getElementById('display-user').innerText = nomeSalvo || 'Convidado';
-    document.getElementById('display-category').innerText = catSalva || 'N/A';
-
-    //Sempre inicializa a variavel como pausado;
-    let EmProducao = localStorage.getItem('EmProducao') || "Iniciar";
-
-    if (EmProducao == "Iniciar")
-    {
-        localStorage.setItem('EmProducao',"Pausado");
+    // Aplica tema salvo para manufatura
+    const temaManuf = localStorage.getItem('temaManufatura') || 'claro';
+    if (temaManuf === 'escuro') {
+        document.body.classList.add('manuf-dark');
+        document.getElementById('btn-tema-manuf').textContent = '🌙';
     }
 
+    let EmProducao = localStorage.getItem('EmProducao') || 'Iniciar';
+    if (EmProducao === 'Iniciar') {
+        localStorage.setItem('EmProducao', 'Pausado');
+    }
 
-    // Inicia na tela home
     carregarTela('homeManufatura_content');
 }
 
-// Faz a tabela se redesenhar a cada 1 segundo, atualizando os cronômetros que estão rodando
+function alternarTemaManufatura() {
+    const escuro = document.body.classList.toggle('manuf-dark');
+    const btn = document.getElementById('btn-tema-manuf');
+    btn.textContent = escuro ? '🌙' : '☀️';
+    localStorage.setItem('temaManufatura', escuro ? 'escuro' : 'claro');
+}
+
+// Redesenha a tabela a cada 1 segundo se em produção
 setInterval(() => {
-    let EmProducao = localStorage.getItem('EmProducao');
-    if (EmProducao === 'Rodando') {
+    if (localStorage.getItem('EmProducao') === 'Rodando') {
         contarMinutos();
     }
 }, 1000);
 
 function carregarTela(nomeDaTela) {
     const principal = document.querySelector('.content');
-
     fetch(`${nomeDaTela}.html`)
         .then(response => {
             if (!response.ok) throw new Error('Página não encontrada');
@@ -47,49 +61,40 @@ function carregarTela(nomeDaTela) {
 }
 
 function atualizarHome() {
+    const listaMaquinas = JSON.parse(localStorage.getItem('maquinas')) || [];
+    document.getElementById('totalMaquinas').innerText = listaMaquinas.length;
 
-    let listaMaquinas = JSON.parse(localStorage.getItem('maquinas'));
-    document.getElementById('totalMaquinas').innerText =  listaMaquinas ? listaMaquinas.length : "0";
+    const listaPedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
+    document.getElementById('totalPedidos').innerText = listaPedidos.length;
 
-    let listaPedidos = JSON.parse(localStorage.getItem('pedidos'));
-    document.getElementById('totalPedidos').innerText = listaPedidos ? listaPedidos.length : "0";
-
-    let concluidos = localStorage.getItem('Concluidos');
-    document.getElementById('totalConcluido').innerText = concluidos > 0 ? concluidos : "0 Pedidos";
+    const concluidos = localStorage.getItem('Concluidos') || 0;
+    document.getElementById('totalConcluido').innerText = concluidos;
 
     listarPedidos();
 }
 
-function listarPedidos() {
+function listarPedidos(filtro) {
     const corpoTabela = document.getElementById('tabela-corpo');
-    const lista = JSON.parse(localStorage.getItem('pedidos')) || [];
+    let lista = JSON.parse(localStorage.getItem('pedidos')) || [];
+    corpoTabela.innerHTML = '';
+    
+    if (filtro) {
+        const f = filtro.toLowerCase();
+        lista = lista.filter(p =>
+            String(p.id).includes(f) ||
+            (p.nomeProduto||'').toLowerCase().includes(f) ||
+            (p.numeroPedido||'').toLowerCase().includes(f) ||
+            (p.CatMaterial||'').toLowerCase().includes(f) ||
+            (p.CatUrgencia||'').toLowerCase().includes(f) ||
+            (p.CatMaq||'').toLowerCase().includes(f)
+        );
+    }
 
-    corpoTabela.innerHTML = ""; // Limpa a tabela antes de preencher
+    const pesoUrgencia = { Critica:4, Alta:3, Média:2, Normal:1 };
+    lista.sort((a, b) => (pesoUrgencia[b.CatUrgencia]||0) - (pesoUrgencia[a.CatUrgencia]||0));
 
-    // 1. MAPEIA O PESO DE CADA URGÊNCIA (Quanto maior o número, mais no topo fica)
-    const pesoUrgencia = {
-        "Critica": 4,
-        "Alta": 3,
-        "Média": 2,
-        "Normal": 1
-    };
+    const classesBadge = { Normal:'badgeNormal', Média:'badgeMedia', Alta:'badgeAlta', Critica:'badgeCritica' };
 
-    // 2. ORDENA A LISTA (Coloca as urgências de maior peso primeiro)
-    lista.sort((a, b) => {
-        const pesoA = pesoUrgencia[a.CatUrgencia] || 0;
-        const pesoB = pesoUrgencia[b.CatUrgencia] || 0;
-        return pesoB - pesoA; // Ordem decrescente
-    });
-
-    // 3. MAPA DE CLASSES CSS DOS BADGES
-    const classesBadge = {
-        "Normal": "badgeNormal",
-        "Média": "badgeMedia",
-        "Alta": "badgeAlta",
-        "Critica": "badgeCritica"
-    };
-
-    // 4. AGORA O FOREACH RODA NA LISTA JÁ ORDENADA (Apenas 1 bloco de HTML limpo)
     lista.forEach(pedidos => {
         const badge = classesBadge[pedidos.CatUrgencia] || 'badgeNormal';
         const estaRodando = localStorage.getItem('EmProducaoId') == Number(pedidos.id) && localStorage.getItem('EmProducao') === 'Rodando';
@@ -97,265 +102,178 @@ function listarPedidos() {
         const displayIniciar = estaRodando ? 'none' : 'inline-block';
         const displayPausar  = estaRodando ? 'inline-block' : 'none';
 
-        const linha = `
+        // Miniatura da imagem
+        let imgHtml = '';
+        if (pedidos.imagemPedido) {
+            const imgSrc = pedidos.imagemPedido.replace(/"/g, '&quot;');
+            imgHtml = `<img src="${imgSrc}" alt="Imagem do pedido" class="miniatura-pedido" onclick="abrirImagemPedido(${pedidos.id})" title="Clique para ampliar">`;
+        }
+        corpoTabela.innerHTML += `
             <tr>
                 <td>${pedidos.id}</td>
                 <td>${pedidos.nomeProduto}</td>
                 <td>${pedidos.numeroPedido}</td>
                 <td>${pedidos.CatMaterial}</td>
-
                 <td><span class="${badge}">${pedidos.CatUrgencia}</span></td>
-
                 <td>${pedidos.CatMaq}</td>
                 <td>
-                    <button data-id="${pedidos.id}" style="display:${displayIniciar};" class="btn-iniciar" onclick="IniciarPedido(${pedidos.id})">▶</button>
-                    <button data-id="${pedidos.id}" style="display:${displayPausar};" class="btn-pausar" onclick="PausarPedido(${pedidos.id})">❚❚</button>
-                    <button data-id="${pedidos.id}" class="btn-finalizar" onclick="FinalizarPedido(${pedidos.id})">⏹</button>
+                    <button data-id="${pedidos.id}" style="display:${displayIniciar};" class="btn-iniciar"   onclick="IniciarPedido(${pedidos.id})">Iniciar</button>
+                    <button data-id="${pedidos.id}" style="display:${displayPausar};" class="btn-pausar"    onclick="PausarPedido(${pedidos.id})">Pause</button>
+                    <button data-id="${pedidos.id}" class="btn-finalizar" onclick="FinalizarPedido(${pedidos.id})">Fim</button>
                 </td>
-
-                <td>${pedidos.horaInicio || '--:--:--'}</td>
-                <td>${pedidos.horaPausa || '--:--:--'}</td>
-                <td>${pedidos.horaFim || '--:--:--'}</td>
-                <td>${pedidos.minutosCorridos || '--:--:--'}</td>
-
-                <td style="display: none;">${pedidos.valorTotal}</td>
-                <td style="display: none;">${pedidos.tempoFabricacao}</td>
-            </tr>
-        `;
-
-        corpoTabela.innerHTML += linha;
+                <td>${pedidos.horaInicio       || '--:--:--'}</td>
+                <td>${pedidos.horaPausa        || '--:--:--'}</td>
+                <td>${pedidos.horaFim          || '--:--:--'}</td>
+                <td>${pedidos.minutosCorridos  || '--:--:--'}</td>
+                <td>${imgHtml}</td>
+                <td style="display:none;">${pedidos.valorTotal}</td>
+                <td style="display:none;">${pedidos.tempoFabricacao}</td>
+            </tr>`;
     });
 }
 
-function IniciarPedido(id) {
-    let EmProducao = localStorage.getItem('EmProducao');
+function abrirImagemPedido(id) {
+    const lista = JSON.parse(localStorage.getItem('pedidos')) || [];
+    const pedido = lista.find(p => Number(p.id) === Number(id));
+    if (pedido && pedido.imagemPedido) {
+        const modal = document.createElement('div');
+        modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;z-index:9999;cursor:pointer;';
+        modal.innerHTML = `<img src="${pedido.imagemPedido}" style="max-width:95vw;max-height:92vh;width:auto;height:auto;border-radius:8px;box-shadow:0 0 40px rgba(0,0,0,0.5);">`;
+        modal.onclick = () => document.body.removeChild(modal);
+        document.body.appendChild(modal);
+    }
+}
 
+function IniciarPedido(id) {
+    const EmProducao = localStorage.getItem('EmProducao');
     if (EmProducao === 'Finalizado' || EmProducao === 'Pausado') {
-        if (confirm("Tem certeza que deseja iniciar a produção")) {
+        if (confirm('Tem certeza que deseja iniciar a produção?')) {
             localStorage.setItem('EmProducao', 'Rodando');
             localStorage.setItem('EmProducaoId', id);
-
-            const opcoes    = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
-            const horaAtual = new Date().toLocaleTimeString('pt-BR', opcoes);
-            localStorage.setItem('HoraInicio', horaAtual);
-
-            // 1. Busca a lista atualizada do localStorage
             let lista = JSON.parse(localStorage.getItem('pedidos')) || [];
-
-            // 2. Localiza o pedido pelo ID digitado
             const pedido = lista.find(p => Number(p.id) === Number(id));
-
             if (pedido) {
-                // 3. Captura a hora atual formatada (HH:MM:SS)
-                const horaAtual = new Date().toLocaleTimeString('pt-BR');
-
-                // 4. Salva a propriedade 'horaInicio' dentro do objeto deste pedido
-                if(!pedido.horaInicio)
-                pedido.horaInicio = horaAtual;
-
-                // 5. Atualiza o localStorage com o dado novo
+                if (!pedido.horaInicio) {
+                const opcoes    = { hour: '2-digit', minute: '2-digit'};
+                pedido.horaInicio = new Date().toLocaleTimeString('pt-BR', opcoes);
+                }
+                registrarAcaoManuf('Manufatura', `Iniciou produção do pedido: ${pedido.numeroPedido}`);
                 localStorage.setItem('pedidos', JSON.stringify(lista));
-
-                // 6. Atualiza a tabela na tela imediatamente para mostrar a hora
                 listarPedidos();
             }
         }
+    } else {
+        alert('Primeiro finalize a produção da peça anterior antes de iniciar uma nova.');
     }
-    else {
-        alert("Primeiro finalize ou pause a produção da peça anterior antes de iniciar uma nova.")
-    }
-
 }
 
 function PausarPedido(id) {
-
-    let EmProducao = localStorage.getItem('EmProducao');
-
+    const EmProducao = localStorage.getItem('EmProducao');
     if (EmProducao === 'Rodando') {
-        if (confirm("Tem certeza que deseja pausar a produção")) {
+        if (confirm('Tem certeza que deseja pausar a produção?')) {
             localStorage.setItem('EmProducao', 'Pausado');
             localStorage.setItem('EmProducaoId', id);
-
-            const horaAtual = new Date().toLocaleTimeString('pt-BR');
-            localStorage.setItem('HoraPausa', horaAtual);
-
-            // 1. Busca a lista atualizada do localStorage
             let lista = JSON.parse(localStorage.getItem('pedidos')) || [];
-
-            // 2. Localiza o pedido pelo ID digitado
             const pedido = lista.find(p => Number(p.id) === Number(id));
-
             if (pedido) {
-                // 3. Captura a hora atual formatada (HH:MM:SS)
-                const horaAtual = new Date().toLocaleTimeString('pt-BR');
-
-                // 4. Salva a propriedade 'horaInicio' dentro do objeto deste pedido
-                pedido.horaPausa = horaAtual;
-
-                // 5. Atualiza o localStorage com o dado novo
+                const opcoes    = { hour: '2-digit', minute: '2-digit'};
+                pedido.horaPausa = new Date().toLocaleTimeString('pt-BR', opcoes);
+                registrarAcaoManuf('Manufatura', `Pausou produção do pedido: ${pedido.numeroPedido}`);
                 localStorage.setItem('pedidos', JSON.stringify(lista));
-
-                // 6. Atualiza a tabela na tela imediatamente para mostrar a hora
                 listarPedidos();
             }
         }
-    }
-    else {
-        alert("Primeiro inicie a produção de uma peça antes de finalizar.")
+    } else {
+        alert('Primeiro inicie a produção de uma peça antes de pausar.');
     }
 }
 
 function FinalizarPedido(id) {
-    let EmProducao = localStorage.getItem('EmProducao');
-    let EmProducaoId = Number(localStorage.getItem('EmProducaoId'));
-
+    const EmProducao = localStorage.getItem('EmProducao');
+    const EmProducaoId = localStorage.getItem('EmProducaoId');
     if (EmProducao === 'Rodando') {
-
-        if(EmProducaoId !== id) {
-        alert("Você só pode finalizar uma peça que esteja em produção");
-        return;
+        if(EmProducaoId != id) {
+            alert('O pedido selecionado não está em produção.');
+            return;
         }
-
-        if (confirm("Tem certeza que deseja finalizar a produção")) {
+        if (confirm('Tem certeza que deseja finalizar a produção?')) {
             localStorage.setItem('EmProducao', 'Finalizado');
             localStorage.setItem('EmProducaoId', 0);
-
-            const horaAtual = new Date().toLocaleTimeString('pt-BR');
-            localStorage.setItem('HoraFim', horaAtual);
-
-            // 1. Busca a lista atualizada do localStorage
             let lista = JSON.parse(localStorage.getItem('pedidos')) || [];
-
-            // 2. Localiza o pedido pelo ID digitado
             const pedido = lista.find(p => Number(p.id) === Number(id));
-
             if (pedido) {
-                // 3. Captura a hora atual formatada (HH:MM:SS)
-                const horaAtual = new Date().toLocaleTimeString('pt-BR');
-
-                // 4. Salva a propriedade 'horaInicio' dentro do objeto deste pedido
-                pedido.horaFim = horaAtual;
-
-                // 5. Atualiza o localStorage com o dado novo
+                const opcoes    = { hour: '2-digit', minute: '2-digit'};
+                pedido.horaFim = new Date().toLocaleTimeString('pt-BR', opcoes);
+                registrarAcaoManuf('Manufatura', `Finalizou produção do pedido: ${pedido.numeroPedido}`);
                 localStorage.setItem('pedidos', JSON.stringify(lista));
 
-                // 6. Atualiza a tabela na tela imediatamente para mostrar a hora
-                excluirPedido(id);
-                listarPedidos();
-                atualizarHome();
+                const segundos = Number(localStorage.getItem('Segundos')) || 0;
+                const minutos  = Number(localStorage.getItem('Minutos'))  || 0;
+                const horas    = Number(localStorage.getItem('Horas'))    || 0;
+                let totalMinutos = horas * 60 + minutos;
+                const resultadoGeral = totalMinutos >= Number(pedido.tempoFabricacao) ? 'Prejuizo' : 'Lucro';
 
-                let segundos = Number(localStorage.getItem('Segundos')) || 0;
-                let minutos = Number(localStorage.getItem('Minutos')) || 0;
-                let horas = Number(localStorage.getItem('Horas')) || 0;
-
-                let totalMinutos = 0;
-                let resultadoGeral;
-                //Faz a conversão de horas para minutos
-                if (horas > 0) {
-                    totalMinutos = 60 * horas;
-                }
-
-                totalMinutos = totalMinutos + minutos;
-
-                if (totalMinutos >= pedido.tempoFabricacao) {
-                    resultadoGeral = "Prejuizo";
-                }
-                else {
-                    resultadoGeral = "Lucro";
-                }
-                
-                // 1. Pega a lista de pedidos concluídos já salvos ou cria uma lista VAZIA se for o primeiro
-                let listaPedidosConcluidos = JSON.parse(localStorage.getItem('pedidosConcluidos')) || [];
-
-                // 2. Cria o novo objeto de pedido com ID incremental correto (se a lista for vazia, tamanho 0 + 1 = ID 1)
-                const novoListaPedidosConcluidos = {
-                    id: listaPedidosConcluidos.length + 1,
+                let listaConcluidos = JSON.parse(localStorage.getItem('pedidosConcluidos')) || [];
+                listaConcluidos.push({
+                    id: listaConcluidos.length + 1,
                     nomeProduto: pedido.nomeProduto,
                     numeroPedido: pedido.numeroPedido,
                     catMaterial: pedido.CatMaterial,
                     CatUrgencia: pedido.CatUrgencia,
-                    CatMaq: pedido.CatMaq, 
-                    TempoProducao: horas + ":" + minutos + ":" + segundos,
+                    CatMaq: pedido.CatMaq,
+                    TempoProducao: `${horas}:${minutos}:${segundos}`,
                     valorTotal: pedido.valorTotal,
                     tempoFabricacao: pedido.tempoFabricacao,
                     resultadoFinalMinutos: totalMinutos,
-                    resultadoFinal: resultadoGeral 
-                };
+                    resultadoFinal: resultadoGeral,
+                    dataFinalizacao: new Date().toISOString()
+                });
+                localStorage.setItem('pedidosConcluidos', JSON.stringify(listaConcluidos));
 
-                // 3. Adiciona na lista e salva de volta no "banco" (localStorage)
-                listaPedidosConcluidos.push(novoListaPedidosConcluidos);
-                localStorage.setItem('pedidosConcluidos', JSON.stringify(listaPedidosConcluidos));
-
+                excluirPedido(id);
                 localStorage.setItem('Segundos', 0);
-                localStorage.setItem('Minutos', 0);
-                localStorage.setItem('Horas', 0);
+                localStorage.setItem('Minutos',  0);
+                localStorage.setItem('Horas',    0);
+                atualizarHome();
             }
         }
-    }
-    else {
-        alert("Primeiro inicie a produção de uma peça antes de finalizar.")
+    } else {
+        alert('Primeiro inicie a produção de uma peça antes de finalizar.');
     }
 }
 
 function contarMinutos() {
-
-    let id = localStorage.getItem('EmProducaoId');
+    const id  = localStorage.getItem('EmProducaoId');
     let segundos = Number(localStorage.getItem('Segundos')) || 0;
-    let minutos = Number(localStorage.getItem('Minutos')) || 0;
-    let horas = Number(localStorage.getItem('Horas')) || 0;
+    let minutos  = Number(localStorage.getItem('Minutos'))  || 0;
+    let horas    = Number(localStorage.getItem('Horas'))    || 0;
 
     segundos++;
-
-    if (segundos === 60) {
-        segundos = 0;
-        minutos++;
-
-        if (minutos === 60) {
-            minutos = 0;
-            horas++;
-        }
-    }
+    if (segundos === 60) { segundos = 0; minutos++; }
+    if (minutos  === 60) { minutos  = 0; horas++;   }
 
     const pad = n => String(n).padStart(2, '0');
 
-    // 1. Busca a lista atualizada do localStorage
     let lista = JSON.parse(localStorage.getItem('pedidos')) || [];
-
-    // 2. Localiza o pedido pelo ID digitado
     const pedido = lista.find(p => Number(p.id) === Number(id));
-
     if (pedido) {
-
-        // 3. Salva a propriedade 'minutosCorridos' dentro do objeto deste pedido
         pedido.minutosCorridos = `${pad(horas)}:${pad(minutos)}:${pad(segundos)}`;
-
-        // 4. Atualiza o localStorage com o dado novo
         localStorage.setItem('pedidos', JSON.stringify(lista));
-
-        // 5. Atualiza a tabela na tela imediatamente para mostrar a hora
         listarPedidos();
     }
 
     localStorage.setItem('Segundos', segundos);
-    localStorage.setItem('Minutos', minutos);
-    localStorage.setItem('Horas', horas);
+    localStorage.setItem('Minutos',  minutos);
+    localStorage.setItem('Horas',    horas);
 }
 
 function excluirPedido(id) {
-    // 1. Altere de const para let para permitir a reatribuição do filtro
     let lista = JSON.parse(localStorage.getItem('pedidos')) || [];
-    const pedidoEncontrado = lista.find(pedido => Number(pedido.id) === Number(id));
-
-    let concluidos = localStorage.getItem('Concluidos') || 0;
-
-    if (pedidoEncontrado) {
-        // 2. Converta ambos os IDs para Number para garantir que o filtro funcione
+    const encontrado = lista.find(p => Number(p.id) === Number(id));
+    if (encontrado) {
         lista = lista.filter(u => Number(u.id) !== Number(id));
-
         localStorage.setItem('pedidos', JSON.stringify(lista));
-        listarPedidos(); // Recarrega a tabela
-
-        concluidos = Number(concluidos) + 1;
+        let concluidos = Number(localStorage.getItem('Concluidos') || 0) + 1;
         localStorage.setItem('Concluidos', concluidos);
     }
 }

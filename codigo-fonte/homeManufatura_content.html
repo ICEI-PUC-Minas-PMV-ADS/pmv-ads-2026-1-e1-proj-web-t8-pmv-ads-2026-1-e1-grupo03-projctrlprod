@@ -18,6 +18,12 @@
        </div>
     </section>
 
+    <div class="lista-header" style="margin-top: 20px">
+        <div style="display:flex; align-items:center; gap:10px;">
+            <input type="text"  id="search-manufatura" class="search-bar-inline" placeholder="🔍 Pesquisar na tabela..." oninput="listarPedidos(this.value)">
+        </div>
+    </div>
+
         <div class="table-container">
         <table class="custom-table">
             <thead>
@@ -33,6 +39,7 @@
                     <th>Pausa</th>
                     <th>Fim</th>
                     <th>Cronometro</th>
+                    <th>Imagem</th>
                     <th style="display: none;">Valor total</th>
                     <th style="display: none;">Tempo de fabricacao</th>
                 </tr>
@@ -42,3 +49,7 @@
             </tbody>
         </table>
         </div>
+
+  <div>
+    <button id="BtnAtualizar" name="button" onclick="listarPedidos()">Atualizar tabela</button>
+  </div>

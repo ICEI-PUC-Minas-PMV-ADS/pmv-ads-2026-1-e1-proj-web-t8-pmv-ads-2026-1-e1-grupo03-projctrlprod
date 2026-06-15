@@ -1,20 +1,26 @@
-    <header>
-        <h1>Painel de Controle</h1>
-            <p>Bem-vindo ao sistema de gerenciamento de usinagem.</p>
-    </header>
+<header>
+    <h1>Painel de Controle</h1>
+    <p>Bem-vindo ao sistema de gerenciamento de usinagem.</p>
+</header>
 
-    <section class="cards">
-        <div class="card">
-            <h3>Ordens de Serviço</h3>
-            <p><span id="totalPedidos"></span> Pendentes</p>
-       </div>
-       <div class="card">
-            <h3>Produção</h3>
-            <p><span id="totalConcluido"></span> Concluidos</p>
-            <button class="btn-zerarMarcador" onclick="ZerarMarcador()">Zerar contagem do marcador</button>
-       </div>
-       <div class="card">
-            <h3>Máquinas</h3>
-            <p><span id="totalMaquinas"></span> Máquinas em Operação</p>
-       </div>
-    </section>
+<section class="cards">
+    <div class="card">
+        <h3>Ordens de Serviço</h3>
+        <p><span id="totalPedidos"></span> Pendentes</p>
+    </div>
+    <div class="card">
+        <h3>Produção</h3>
+        <p><span id="totalConcluido"></span> Concluídos</p>
+        <button class="btn-zerarMarcador" onclick="ZerarMarcador()">Zerar contagem</button>
+    </div>
+    <div class="card">
+        <h3>Máquinas</h3>
+        <p><span id="totalMaquinas"></span> em operação</p>
+    </div>
+</section>
+
+<div class="chart-container">
+    <h3 class="chart-title">Produções finalizadas — últimos 30 dias</h3>
+    <canvas id="graficoProducao"></canvas>
+    <p id="chart-empty-msg" style="display:none; color:#94a3b8; text-align:center; padding:20px;">Nenhum dado disponível ainda. Finalize um pedido na aba Manufatura para ver o gráfico.</p>
+</div>

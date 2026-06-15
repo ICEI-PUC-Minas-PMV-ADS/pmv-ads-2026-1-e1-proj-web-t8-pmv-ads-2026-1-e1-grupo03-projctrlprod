@@ -1,7 +1,10 @@
 <div class="lista-wrapper">
-    <header>
-        <h2>✅️ Pedidos concluidos</h2>
-        <p>Visualize os pedidos concluidos para entender o resultado final de produção</p>
+    <header class="lista-header">
+        <div>
+            <h2>✅️ Pedidos concluidos</h2>
+            <p>Visualize os pedidos concluidos para entender o resultado final de produção</p>
+        </div>
+        <input type="text" class="search-bar-inline" placeholder="🔍 Pesquisar..." oninput="filtrarTabelaDashboard(this.value)">
     </header>
 
     <div class="table-container">
@@ -24,3 +27,7 @@
             </tbody>
         </table>
     </div>
+
+  <div>
+    <button id="BtnAtualizar" name="button" onclick="listarPedidosConcluidos()">Atualizar tabela</button>
+  </div>

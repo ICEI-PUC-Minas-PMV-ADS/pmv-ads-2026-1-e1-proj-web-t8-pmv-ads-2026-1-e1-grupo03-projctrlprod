@@ -1,0 +1,26 @@
+<div class="lista-wrapper">
+    <header class="lista-header">
+        <div>
+            <h2>📋 Relatórios</h2>
+            <p>Histórico de todas as ações realizadas no sistema</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+            <input type="text" class="search-bar-inline" placeholder="🔍 Pesquisar..." oninput="filtrarRelatorios(this.value)">
+        </div>
+    </header>
+
+    <div class="table-container">
+        <table class="custom-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Usuário</th>
+                    <th>Aba</th>
+                    <th>Ação</th>
+                    <th>Data / Hora</th>
+                </tr>
+            </thead>
+            <tbody id="tabela-relatorios"></tbody>
+        </table>
+    </div>
+</div>

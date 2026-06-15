@@ -1,60 +1,64 @@
 <div class="lista-wrapper">
-    <header>
-        <h2>👥 Usuários Cadastrados</h2>
-        <p>Visualize e gerencie as contas do sistema</p>
+    <header class="lista-header">
+        <div>
+            <h2>👥 Usuários</h2>
+            <p>Visualize e gerencie as contas do sistema</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+            <input type="text" class="search-bar-inline" placeholder="🔍 Pesquisar..." oninput="filtrarTabela(this.value, listarUsuarios)">
+            <button class="btn-novo" onclick="abrirPopupNovoUsuario()">+ Novo Usuário</button>
+        </div>
     </header>
 
     <div class="table-container">
         <table class="custom-table">
             <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Usuário</th>
-                    <th>Categoria</th>
-                    <th>Ações</th>
-                </tr>
+                <tr><th>ID</th><th>Usuário</th><th>Categoria</th><th>Ações</th></tr>
             </thead>
-            <tbody id="tabela-corpo">
-                <!-- Os dados vão aparecer aqui via JS -->
-            </tbody>
+            <tbody id="tabela-corpo"></tbody>
         </table>
     </div>
-    
-<dialog id="meuPopup">
-    <header>
-          <h2>Alterar dados do usuário: <span id="user">...</span></h2>
-          <p>Preencha os dados abaixo para alterar os dados no sistema</p>
-        </header>
+    <div><button id="BtnAtualizar" onclick="listarUsuarios()">Atualizar tabela</button></div>
 
+    <!-- POPUP NOVO USUÁRIO -->
+    <dialog id="popup-novo-usuario" class="popup-cadastro">
+        <button class="popup-fechar" onclick="document.getElementById('popup-novo-usuario').close()">✕</button>
+        <h2>➕ Novo Usuário</h2>
+        <p>Preencha os dados abaixo para cadastrar no sistema</p>
+        <div class="input-group"><label>Nome ou Matrícula</label><input type="text" id="username" placeholder="Ex: 102030"></div>
         <div class="input-group">
-          <label>Novo nome ou nova matrícula</label>
-          <input type="text" id="username" placeholder="Ex: 102030">
+            <label for="usuarioCat">Categoria do Usuário</label>
+            <select id="usuarioCat" class="custom-select">
+                <option value="" disabled selected>Selecione uma categoria...</option>
+                <option value="Manufatura">🛠️ Manufatura</option>
+                <option value="Administrador">🔑 Administrador</option>
+            </select>
         </div>
-
+        <div class="input-group"><label>Senha</label><input type="password" id="pwd1" placeholder="••••"></div>
+        <div class="input-group"><label>Confirmar Senha</label><input type="password" id="pwd2" placeholder="••••"></div>
         <div class="input-group">
-          <label for="usuarioCat">Categoria do Usuário</label>
-          <select id="usuarioCat" name="usuarioCat" class="custom-select">
-            <option value="" disabled selected>Selecione uma categoria...</option>
-            <option value="Manufatura">🛠️ Manufatura</option>
-            <option value="Administrador">🔑 Administrador</option>
-          </select>
+            <label>ID personalizado <span style="font-size:0.78rem;color:#94a3b8;">(opcional — deixe vazio para automático)</span></label>
+            <input type="number" id="userId" placeholder="Ex: 1042" min="1" step="1" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
         </div>
+        <button type="button" onclick="CadastrarUsuario()">Cadastrar Usuário</button>
+        <footer class="form-footer"><p>© 2026 UsinagensPro V1.0</p></footer>
+    </dialog>
 
+    <!-- POPUP EDITAR USUÁRIO (já existia) -->
+    <dialog id="meuPopup">
+        <header><h2>Alterar dados do usuário: <span id="user"></span></h2></header>
+        <div class="input-group"><label>Nome ou Matrícula</label><input type="text" id="username-edit" placeholder="Ex: 102030"></div>
         <div class="input-group">
-          <label>Nova senha</label>
-          <input type="password" id="pwd1" placeholder="••••">
+            <label for="usuarioCat-edit">Categoria</label>
+            <select id="usuarioCat-edit" class="custom-select">
+                <option value="Manufatura">🛠️ Manufatura</option>
+                <option value="Administrador">🔑 Administrador</option>
+            </select>
         </div>
-
-        <div class="input-group">
-          <label>Confirmar nova senha</label>
-          <input type="password" id="pwd2" placeholder="••••">
-        </div>
-
-        <button type="button" id="BtnCadastrar" onclick="salvarAlteracoes()">Modificar Usuário</button>
-
-        <footer class="form-footer">
-          <p>© 2026 UsinagensPro V1.0</p>
-        </footer>
-</dialog>
-
+        <div class="input-group"><label>Nova Senha</label><input type="password" id="pwd1-edit" placeholder="••••"></div>
+        <div class="input-group"><label>Confirmar Senha</label><input type="password" id="pwd2-edit" placeholder="••••"></div>
+        <div class="input-group"><label>ID</label><input type="number" id="userId-edit" placeholder="ID do usuário" min="1" step="1" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></div>
+        <button type="button" onclick="salvarAlteracoes()">Modificar dados</button>
+        <footer class="form-footer"><p>© 2026 UsinagensPro V1.0</p></footer>
+    </dialog>
 </div>

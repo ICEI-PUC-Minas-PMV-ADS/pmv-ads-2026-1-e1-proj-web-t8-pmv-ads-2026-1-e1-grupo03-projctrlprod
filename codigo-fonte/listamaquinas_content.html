@@ -1,7 +1,13 @@
 <div class="lista-wrapper">
-    <header>
-        <h2>⚙️ Máquinas cadastradas</h2>
-        <p>Visualize e gerencie as máquinas da produção</p>
+    <header class="lista-header">
+        <div>
+            <h2>🏭 Máquinas</h2>
+            <p>Visualize e gerencie as máquinas do sistema</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+            <input type="text" class="search-bar-inline" placeholder="🔍 Pesquisar..." oninput="filtrarTabela(this.value, listarMaquinas)">
+            <button class="btn-novo" onclick="abrirPopupNovaMaquina()">+ Nova Máquina</button>
+        </div>
     </header>
 
     <div class="table-container">
@@ -9,43 +15,53 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Marca</th>
+                    <th>Nome/Marca</th>
                     <th>Categoria</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
-            <tbody id="tabela-corpo">
-                <!-- Os dados vão aparecer aqui via JS -->
-            </tbody>
+            <tbody id="tabela-corpo"></tbody>
         </table>
     </div>
+    <div><button id="BtnAtualizar" onclick="listarMaquinas()">Atualizar tabela</button></div>
 
-<dialog id="meuPopupMaq">
-    <header>
-          <h2>Alterar dados do equipamento: <span id="user">...</span></h2>
-          <p>Preencha os dados abaixo para alterar os dados no sistema</p>
-        </header>
-
+    <!-- POPUP NOVA MÁQUINA -->
+    <dialog id="popup-nova-maquina" class="popup-cadastro">
+        <button class="popup-fechar" onclick="document.getElementById('popup-nova-maquina').close()">✕</button>
+        <h2>➕ Nova Máquina</h2>
+        <p>Preencha os dados abaixo para cadastrar no sistema</p>
         <div class="input-group">
-          <label>Novo nome da marca</label>
-          <input type="text" id="name" placeholder="Ex: Mazak">
+            <label>Nome ou marca</label>
+            <input type="text" id="name" placeholder="Ex: Mazak">
         </div>
-
         <div class="input-group">
-          <label for="maquinaCat">Categoria das máquinas</label>
-          <select id="maquinaCat" name="maquinaCat" class="custom-select">
-            <option value="" disabled selected>Selecione uma categoria...</option>
-            <option value="Fresa_Manual">🛠️ Fresa - Manual</option>
-            <option value="Fresa_CNC">🛠️ Fresa - CNC</option>
-            <option value="Torno_Manual">🛠️ Torno - Manual</option>
-            <option value="Torno-CNC">🛠️ Torno - CNC</option>
-          </select>
+            <label for="Cat">Categoria</label>
+            <select id="Cat" name="Cat" class="custom-select">
+                <option value="" disabled selected>Selecione uma categoria...</option>
+                <option value="Fresa_Manual">🛠️ Fresa - Manual</option>
+                <option value="Fresa_CNC">🛠️ Fresa - CNC</option>
+                <option value="Torno_Manual">🛠️ Torno - Manual</option>
+                <option value="Torno-CNC">🛠️ Torno - CNC</option>
+            </select>
         </div>
+        <button type="button" id="BtnCadastrar" onclick="CadastrarMaquina()">Cadastrar</button>
+        <footer class="form-footer"><p>© 2026 UsinagensPro V1.0</p></footer>
+    </dialog>
 
-        <button type="button" id="BtnCadastrar" onclick="salvarAlteracoesMaq()">Modificar dados</button>
-
-        <footer class="form-footer">
-          <p>© 2026 UsinagensPro V1.0</p>
-        </footer>
-</dialog>
-
+    <!-- POPUP EDITAR MÁQUINA (já existia) -->
+    <dialog id="meuPopupMaquina">
+        <header><h2>Alterar dados da máquina</h2></header>
+        <div class="input-group"><label>Nome/Marca</label><input type="text" id="nameMaq" placeholder="Ex: Mazak"></div>
+        <div class="input-group">
+            <label for="CatMaq2">Categoria</label>
+            <select id="CatMaq2" class="custom-select">
+                <option value="Fresa_Manual">🛠️ Fresa - Manual</option>
+                <option value="Fresa_CNC">🛠️ Fresa - CNC</option>
+                <option value="Torno_Manual">🛠️ Torno - Manual</option>
+                <option value="Torno-CNC">🛠️ Torno - CNC</option>
+            </select>
+        </div>
+        <button class="btn-novo" type="button" onclick="salvarAlteracoesMaq()">Modificar dados</button>
+        <footer class="form-footer"><p>© 2026 UsinagensPro V1.0</p></footer>
+    </dialog>
 </div>

@@ -7,9 +7,13 @@
     <link rel="stylesheet" href="principal.css">
 </head>
 <body class="main-body">
-    <!-- Barra Superior -->
     <nav class="navbar">
-        <div class="logo">UsinagensPro V1.0</div>
+        <div class="logo">
+            <img id="logo-icon" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23f1f5f9'%3E%3Cpath d='M12 15.5A3.5 3.5 0 0 1 8.5 12 3.5 3.5 0 0 1 12 8.5a3.5 3.5 0 0 1 3.5 3.5 3.5 3.5 0 0 1-3.5 3.5m7.43-2.92c.04-.3.07-.61.07-.93s-.03-.63-.07-.93l2-1.56c.18-.14.23-.41.12-.62l-1.9-3.29c-.12-.22-.37-.3-.59-.22l-2.36.95c-.49-.38-1.01-.7-1.59-.94l-.36-2.5c-.04-.24-.24-.42-.5-.42h-3.8c-.26 0-.46.18-.5.42l-.35 2.5c-.59.24-1.11.56-1.6.94l-2.36-.95c-.22-.09-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.62l2 1.56c-.04.3-.07.62-.07.94s.03.63.07.94l-2 1.56c-.18.14-.23.41-.12.62l1.9 3.29c.12.22.37.3.59.22l2.36-.95c.49.38 1.01.7 1.6.94l.35 2.5c.05.24.24.42.5.42h3.8c.26 0 .46-.18.5-.42l.36-2.5c.58-.24 1.1-.56 1.59-.94l2.36.95c.22.09.47 0 .59-.22l1.9-3.29c.12-.21.07-.48-.12-.62l-2-1.56z'/%3E%3C/svg%3E" 
+                 alt="Logo" class="logo-gear" title="Clique para trocar o ícone" onclick="trocarIconeLogo()" style="cursor:pointer;">
+            <input type="file" id="logo-file-input" accept=".png" style="display:none;" onchange="carregarIconeLogo(event)">
+            <span class="logo-text">UsinagensPro <span class="logo-version">v1.0</span></span>
+        </div>
         <div class="user-info">
             <span id="display-user">Usuário</span> | 
             <span id="display-category" class="badge">Categoria</span>
@@ -18,41 +22,74 @@
     </nav>
 
     <div class="app-container">
-        <!-- Árvore de Projetos (Lateral) -->
         <aside class="sidebar">
-        <h3>Arvore do projeto</h3>
-        <ul class="project-tree">
-            <li class="folder" onclick="carregarTela('home_content')">
-                <span class="file_10"><span class="icon">🏠</span>Home</span>
-            </li>
-            <li class="folder" onclick="carregarTela('cadastrarUsuario_content')">
-                <span class="file_20"><span class="icon">👤</span>Cadastrar usuários</span>
-            </li>
-            <li class="folder" onclick="carregarTela('listaUsuarios_content')">
-                <span class="file_30"><span class="icon">👥</span>Gerenciar Usuários</span>
-            </li>
-            <li class="folder" onclick="carregarTela('cadastrarMaquinas_content')">
-                <span class="file_40"><span class="icon">🔩</span>Cadastrar máquinas</span>
-            </li>
-            <li class="folder" onclick="carregarTela('listamaquinas_content')">
-                <span class="file_50"><span class="icon">🏭</span>Gerenciar máquinas</span>
-            </li>
-            <li class="folder" onclick="carregarTela('cadastrarPedido_content')">
-                <span class="file_60"><span class="icon">📦</span>Cadastrar pedidos</span>
-            </li>
-            <li class="folder" onclick="carregarTela('listaPedidos_content')">
-                <span class="file_70"><span class="icon">📑</span>Gerenciar pedidos</span>
-            </li>
-            <li class="folder" onclick="carregarTela('dashboard_content')">
-                <span class="file_80"><span class="icon">📊</span>Dashboard</span>
-            </li>
-        </ul>
-    </aside>
+            <h3>Menu</h3>
 
-        <!-- Área de Trabalho (Principal) -->
-        <main class="content">
-        </main>
+            <!-- Barra de pesquisa no topo do menu -->
+            <div class="sidebar-search">
+                <input type="text" id="menu-search" placeholder="🔍 Pesquisar no menu..." oninput="filtrarMenu(this.value)">
+            </div>
+
+            <ul class="project-tree" id="project-tree">
+                <li class="folder" data-label="Home" onclick="carregarTela('home_content')">
+                    <span class="file_10"><span class="icon">🏠</span>Home</span>
+                </li>
+
+                <li class="folder" data-label="Máquinas" onclick="carregarTela('listamaquinas_content')">
+                    <span class="file_50"><span class="icon">🏭</span>Máquinas</span>
+                </li>
+                <li class="folder" data-label="Pedidos" onclick="carregarTela('listaPedidos_content')">
+                    <span class="file_70"><span class="icon">📑</span>Pedidos</span>
+                </li>
+                <li class="folder" data-label="Dashboard" onclick="carregarTela('dashboard_content')">
+                    <span class="file_80"><span class="icon">📊</span>Dashboard</span>
+                </li>
+            </ul>
+
+            <!-- Rodapé do menu: Ajustes + textarea -->
+            <div class="sidebar-footer">
+                <!-- Submenu (abre para cima, ACIMA do trigger) -->
+                <ul class="submenu" id="submenu-ajustes">
+                    <!-- ACESSO -->
+                    <li class="submenu-divider">Acesso</li>
+                    <li class="submenu-item" onclick="carregarTela('listaUsuarios_content')">
+                        <span class="icon">👥</span>Gerenciar Usuários
+                    </li>
+                    <li class="submenu-item" onclick="carregarTela('relatorios_content')">
+                        <span class="icon">📋</span>Relatórios
+                    </li>
+
+                    <!-- MODO (claro/escuro/sépia lado a lado) -->
+                    <li class="submenu-divider">Modo</li>
+                    <li class="submenu-row">
+                        <button class="btn-modo" data-modo="claro"  onclick="aplicarModo('claro')">☀️ Claro</button>
+                        <button class="btn-modo" data-modo="escuro" onclick="aplicarModo('escuro')">🌙 Escuro</button>
+                        <button class="btn-modo" data-modo="sepia"  onclick="aplicarModo('sepia')">📜 Sépia</button>
+                    </li>
+
+                    <!-- TEMA NAVBAR (azul/verde/cinza lado a lado) -->
+                    <li class="submenu-divider">Tema</li>
+                    <li class="submenu-row">
+                        <button class="btn-tema-nav" data-tema="azul"  onclick="aplicarTemaNavbar('azul')">🔵 Azul</button>
+                        <button class="btn-tema-nav" data-tema="verde" onclick="aplicarTemaNavbar('verde')">🟢 Verde</button>
+                        <button class="btn-tema-nav" data-tema="cinza" onclick="aplicarTemaNavbar('cinza')">⬜ Cinza</button>
+                    </li>
+
+                </ul>
+
+                <!-- Botão Ajustes (fica fixo embaixo, submenu abre acima) -->
+                <div class="ajustes-trigger" onclick="toggleAjustes(event)">
+                    <span><span class="icon">⚙️</span>Ajustes</span>
+                    <span class="ajustes-arrow" id="ajustes-arrow">▲</span>
+                </div>
+
+                <textarea id="sidebar-nota" class="sidebar-textarea" placeholder="Anotações rápidas..."></textarea>
+            </div>
+        </aside>
+
+        <main class="content"></main>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="principal.js"></script>
 </body>
 </html>

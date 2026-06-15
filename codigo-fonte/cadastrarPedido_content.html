@@ -1,7 +1,7 @@
 <div class="cadastro-wrapper">
     <form class="cadastro-form">
         <header>
-          <h2>➕ Novo pedido</h2>
+          <h2>➕ Novo Pedido</h2>
           <p>Preencha os dados abaixo para cadastrar no sistema</p>
         </header>
 
@@ -36,7 +36,7 @@
         </div>
 
         <div class="input-group">
-          <label for="tempoFabricacao">Valor extimado de tempo para fabricação da peça (M)</label>
+          <label for="tempoFabricacao">Valor estimado de tempo para fabricação da peça (M)</label>
           <input type="text" id="tempoFabricacao" placeholder="Ex: 1 (minutos)" required>
         </div>
 
@@ -57,11 +57,38 @@
           </select>
         </div>
 
+        <div class="input-group">
+          <label for="imagemPedido">Imagem do pedido</label>
+          <input type="file" id="imagemPedido" accept="image/*" class="input-file-pedido">
+          <div id="preview-imagem" class="preview-imagem-container" style="display:none;">
+            <img id="preview-img" src="" alt="Pré-visualização" class="preview-img">
+            <button type="button" class="btn-remover-img" onclick="removerImagemPedido()">✕ Remover</button>
+          </div>
+        </div>
 
         <button type="button" id="BtnCadastrar" onclick="CadastrarPedido()">Cadastrar</button>
 
         <footer class="form-footer">
-          <p>© 2026 UsinagensPro V1.0</p>
+          <p>© 2026 UsinagensPro v1.0</p>
         </footer>
     </form>
 </div>
+
+<script>
+document.getElementById('imagemPedido').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+            document.getElementById('preview-img').src = ev.target.result;
+            document.getElementById('preview-imagem').style.display = 'flex';
+        };
+        reader.readAsDataURL(file);
+    }
+});
+function removerImagemPedido() {
+    document.getElementById('imagemPedido').value = '';
+    document.getElementById('preview-imagem').style.display = 'none';
+    document.getElementById('preview-img').src = '';
+}
+</script>

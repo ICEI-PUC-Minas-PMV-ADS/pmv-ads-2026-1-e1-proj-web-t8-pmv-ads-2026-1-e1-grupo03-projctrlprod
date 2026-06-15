@@ -1,92 +1,128 @@
 <div class="lista-wrapper">
-    <header>
-        <h2>⚙️ Pedidos cadastrados</h2>
-        <p>Visualize e gerencie as pedidos em produção</p>
+    <header class="lista-header">
+        <div>
+            <h2>📑 Pedidos</h2>
+            <p>Visualize e gerencie os pedidos em produção</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+            <input type="text" id="search-pedidos" class="search-bar-inline" placeholder="🔍 Pesquisar..." oninput="filtrarTabelaPedidos(this.value)">
+            <button class="btn-novo" onclick="abrirPopupNovoPedido()">+ Novo Pedido</button>
+        </div>
     </header>
 
     <div class="table-container">
         <table class="custom-table">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Nome produto</th>
-                    <th>Número pedido</th>
-                    <th>Material</th>
-                    <th>Valor fabricação (R$)</th>
-                    <th>Extimativa de tempo (M)</th>
-                    <th>Nível de urgência</th>
-                    <th>Identificação máquina</th>
+                    <th>ID</th><th>Nome produto</th><th>Número pedido</th><th>Material</th>
+                    <th>Valor fabricação (R$)</th><th>Estimativa de tempo (M)</th>
+                    <th>Nível de urgência</th><th>Identificação máquina</th><th>Ações</th>
                 </tr>
             </thead>
-            <tbody id="tabela-corpo">
-                <!-- Os dados vão aparecer aqui via JS -->
-            </tbody>
+            <tbody id="tabela-corpo"></tbody>
         </table>
     </div>
+    <div><button id="BtnAtualizar" onclick="listarPedidos()">Atualizar tabela</button></div>
 
-<dialog id="meuPopupPedido">
-    <header>
-          <h2>Alterar dados do pedido</h2>
-          <p>Preencha os dados abaixo para alterar os dados no sistema</p>
-        </header>
+    <!-- POPUP NOVO PEDIDO -->
+    <dialog id="popup-novo-pedido" class="popup-cadastro">
+        <button class="popup-fechar" onclick="fecharPopupNovoPedido()">✕</button>
+        <h2>➕ Novo Pedido</h2>
+        <p>Preencha os dados abaixo para cadastrar no sistema</p>
 
-       <div class="input-group">
-          <label>Nome do produto a ser fabricado</label>
-          <input type="text" id="nomeProduto" placeholder="Ex: Flange 30mm" required>
-        </div>
-
+        <!-- Nome do produto com dropdown de salvos -->
         <div class="input-group">
-          <label>Número do pedido a ser fabricado</label>
-          <input type="text" id="numeroPedido" placeholder="Ex: 0001" required>
+            <label>Nome do produto</label>
+            <div style="position:relative; display:flex; align-items:center; gap:4px;">
+                <input type="text" id="nomeProduto" placeholder="Ex: Flange 30mm" style="flex:1;">
+                <button type="button" id="btn-dropdown-salvos" onclick="toggleDropdownSalvos()" title="Pedidos salvos" style="background:none;border:none;cursor:pointer;font-size:16px;padding:4px 6px;color:inherit;">▼</button>
+                <div id="dropdown-salvos" style="display:none;position:absolute;top:100%;left:0;right:0;background:var(--bg,#fff);border:1px solid #ccc;border-radius:6px;box-shadow:0 4px 16px rgba(0,0,0,0.15);z-index:9999;max-height:200px;overflow-y:auto;">
+                </div>
+            </div>
         </div>
 
+        <div class="input-group"><label>Número do pedido</label><input type="text" id="numeroPedido" placeholder="Ex: 0001"></div>
         <div class="input-group">
-          <label for="CatMaterial">Material</label>
-          <select id="CatMaterial" name="CatMaterial" class="custom-select">
-            <option value="" disabled selected>Selecione um material...</option>
-            <option value="SAE 1020">SAE 1020</option>
-            <option value="SAE 1045">SAE 1045</option>
-            <option value="A36">A36</option>
-            <option value="AISI 304">AISI 304</option>
-            <option value="AISI 316">AISI 316</option>
-            <option value="AISI 430">AISI 430</option>
-            <option value="AISI 420">AISI 420</option>
-            <option value="AISI 201">AISI 201</option>
-          </select>
+            <label>Material</label>
+            <select id="CatMaterial" class="custom-select">
+                <option value="" disabled selected>Selecione um material...</option>
+                <option value="SAE 1020">SAE 1020</option><option value="SAE 1045">SAE 1045</option>
+                <option value="A36">A36</option><option value="AISI 304">AISI 304</option>
+                <option value="AISI 316">AISI 316</option><option value="AISI 430">AISI 430</option>
+                <option value="AISI 420">AISI 420</option><option value="AISI 201">AISI 201</option>
+            </select>
         </div>
-
+        <div class="input-group"><label>Valor total de fabricação (R$)</label><input type="text" id="valorTotal" placeholder="Ex: R$50,00"></div>
+        <div class="input-group"><label>Tempo estimado (minutos)</label><input type="text" id="tempoFabricacao" placeholder="Ex: 30"></div>
         <div class="input-group">
-          <label>Valor total de fabricação da peça (R$)</label>
-          <input type="text" id="valorTotal" placeholder="Ex: R$50,00" required>
+            <label>Nível de urgência</label>
+            <select id="CatUrgencia" class="custom-select">
+                <option value="" disabled selected>Selecione o nível...</option>
+                <option value="Normal">Normal</option><option value="Média">Média</option>
+                <option value="Alta">Alta</option><option value="Critica">Critica</option>
+            </select>
         </div>
-
         <div class="input-group">
-          <label for="tempoFabricacao">Valor extimado de tempo para fabricação da peça (M)</label>
-          <input type="text" id="tempoFabricacao" placeholder="Ex: 1 (minutos)" required>
+            <label>Identificação de máquina</label>
+            <select id="CatMaq" class="custom-select"></select>
         </div>
-
         <div class="input-group">
-          <label for="CatUrgencia">Nível de urgência de fabricação</label>
-          <select id="CatUrgencia" name="CatUrgencia" class="custom-select">
-            <option value="" disabled selected>Selecione o nível de urgência de fabricação...</option>
-            <option value="Normal">Normal</option>
-            <option value="Média">Média</option>
-            <option value="Alta">Alta</option>
-            <option value="Critica">Critica</option>
-          </select>
+            <label>Imagem do pedido</label>
+            <input type="file" id="imagemPedido" accept="image/*" class="input-file-pedido">
+            <div id="preview-imagem" class="preview-imagem-container" style="display:none;">
+                <img id="preview-img" src="" alt="Pré-visualização" class="preview-img">
+                <button type="button" class="btn-remover-img" onclick="removerImagemPedido()">✕ Remover</button>
+            </div>
         </div>
 
+        <!-- Lembrar preenchimento -->
+        <div class="input-group" style="flex-direction:row;align-items:center;gap:10px;margin-top:4px;">
+            <input type="checkbox" id="lembrarPreenchimento" style="width:18px;height:18px;cursor:pointer;accent-color:var(--accent,#6366f1);">
+            <label for="lembrarPreenchimento" style="margin:0;cursor:pointer;font-weight:600;">Lembrar preenchimento</label>
+        </div>
+
+        <button id="BtnCadastrar" type="button" onclick="CadastrarPedido()">Cadastrar</button>
+        <footer class="form-footer"><p>© 2026 UsinagensPro V1.0</p></footer>
+    </dialog>
+
+    <!-- POPUP EDITAR PEDIDO -->
+    <dialog id="meuPopupPedido" class="popup-cadastro">
+        <button class="popup-fechar" onclick="document.getElementById('meuPopupPedido').close()">✕</button>
+        <h2>Alterar dados do pedido</h2>
+        <div class="input-group"><label>Nome do produto</label><input type="text" id="nomeProduto-edit" placeholder="Ex: Flange 30mm"></div>
+        <div class="input-group"><label>Número do pedido</label><input type="text" id="numeroPedido-edit" placeholder="Ex: 0001"></div>
         <div class="input-group">
-          <label for="CatMaq">Identificação de máquina</label>
-          <select id="CatMaq" name="eCatMaq" class="custom-select">
-          </select>
+            <label>Material</label>
+            <select id="CatMaterial-edit" class="custom-select">
+                <option value="SAE 1020">SAE 1020</option><option value="SAE 1045">SAE 1045</option>
+                <option value="A36">A36</option><option value="AISI 304">AISI 304</option>
+                <option value="AISI 316">AISI 316</option><option value="AISI 430">AISI 430</option>
+                <option value="AISI 420">AISI 420</option><option value="AISI 201">AISI 201</option>
+            </select>
         </div>
-
-        <button type="button" id="BtnCadastrar" onclick="salvarAlteracoesPedido()">Modificar dados</button>
-
-        <footer class="form-footer">
-          <p>© 2026 UsinagensPro V1.0</p>
-        </footer>
-</dialog>
-
+        <div class="input-group"><label>Valor total (R$)</label><input type="text" id="valorTotal-edit" placeholder="Ex: R$50,00"></div>
+        <div class="input-group"><label>Tempo estimado (M)</label><input type="text" id="tempoFabricacao-edit" placeholder="Ex: 1"></div>
+        <div class="input-group">
+            <label>Nível de urgência</label>
+            <select id="CatUrgencia-edit" class="custom-select">
+                <option value="Normal">Normal</option><option value="Média">Média</option>
+                <option value="Alta">Alta</option><option value="Critica">Critica</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label>Identificação de máquina</label>
+            <select id="CatMaq-edit" class="custom-select"></select>
+        </div>
+        <!-- Imagem no modo editar -->
+        <div class="input-group">
+            <label>Imagem do pedido</label>
+            <input type="file" id="imagemPedido-edit" accept="image/*" class="input-file-pedido">
+            <div id="preview-imagem-edit" class="preview-imagem-container" style="display:none;">
+                <img id="preview-img-edit" src="" alt="Pré-visualização" class="preview-img">
+                <button type="button" class="btn-remover-img" onclick="removerImagemPedidoEdit()">✕ Remover</button>
+            </div>
+        </div>
+        <button type="button" onclick="salvarAlteracoesPedido()">Modificar dados</button>
+        <footer class="form-footer"><p>© 2026 UsinagensPro V1.0</p></footer>
+    </dialog>
 </div>

@@ -10,6 +10,11 @@
 
 <form class="login-form">
 
+  <div class="login-brand">
+    <img id="login-logo" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230f172a'%3E%3Cpath d='M12 15.5A3.5 3.5 0 0 1 8.5 12 3.5 3.5 0 0 1 12 8.5a3.5 3.5 0 0 1 3.5 3.5 3.5 3.5 0 0 1-3.5 3.5m7.43-2.92c.04-.3.07-.61.07-.93s-.03-.63-.07-.93l2-1.56c.18-.14.23-.41.12-.62l-1.9-3.29c-.12-.22-.37-.3-.59-.22l-2.36.95c-.49-.38-1.01-.7-1.59-.94l-.36-2.5c-.04-.24-.24-.42-.5-.42h-3.8c-.26 0-.46.18-.5.42l-.35 2.5c-.59.24-1.11.56-1.6.94l-2.36-.95c-.22-.09-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.62l2 1.56c-.04.3-.07.62-.07.94s.03.63.07.94l-2 1.56c-.18.14-.23.41-.12.62l1.9 3.29c.12.22.37.3.59.22l2.36-.95c.49.38 1.01.7 1.6.94l.35 2.5c.05.24.24.42.5.42h3.8c.26 0 .46-.18.5-.42l.36-2.5c.58-.24 1.1-.56 1.59-.94l2.36.95c.22.09.47 0 .59-.22l1.9-3.29c.12-.21.07-.48-.12-.62l-2-1.56z'/%3E%3C/svg%3E" alt="Logo" class="login-gear">
+    <span class="login-title">UsinagensPro <span class="login-version">v1.0</span></span>
+  </div>
+
   <div>
     <h2>Seja bem vindo</h2>
     <h3>Faça seu login para acessar a tela principal</h3>
@@ -17,12 +22,12 @@
 
   <div>
     <label for="username">Nome ou mátricula do usuário:</label><br>
-    <input type="text" id="username" name="username" placeholder="admin"><br>
+    <input type="text" id="username" name="username" placeholder="Digite"><br>
   </div>
 
   <div>
     <label for="pwd">Digite sua senha:</label><br>
-    <input type="password" id="pwd" name="pwd" placeholder="admin">
+    <input type="password" id="pwd" name="pwd" placeholder="Digite">
   </div>
 
   <div>
@@ -30,10 +35,15 @@
   </div>
 
   <div class="footer-copyright">
-    <p>&copy; 2026 UsinagensPro V1.0. Todos os direitos reservados.</p>
+    <p>&copy; 2026 UsinagensPro v1.0. Todos os direitos reservados.</p>
   </div>
 
 </form>
     <script src="script.js"></script>
+    <script>
+    // Sync logo with main app logo
+    const logo = localStorage.getItem('logoIcone');
+    if (logo) document.getElementById('login-logo').src = logo;
+    </script>
 </body>
 </html>
