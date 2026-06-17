@@ -79,19 +79,19 @@
 
 |ID       | Descrição                                                                                                                           | Prioridade |
 |---------|-------------------------------------------------------------------------------------------------------------------------------------|------------|
-| RF-01   | O sistema deve possibilitar o cadastro de novos colaboradores dos setores da produção e administração.                              | Alta       | 
-| RF-02   | O sistema deve permitir que um torneiro inicie, pause e conclua o tempo de produção de uma determinada peça.                        | Alta       |
-| RF-03   | O sistema deve possibilitar a administração programar uma fila de produção com base na sua categoria (crítica, alta, média, normal).| Alta       |
-| RF-04   | O sistema deve possibilitar a administração ver quais peças obtiveram lucro ou prejuízo durante sua produção.                       | Alta       |
-| RF-05   | O sistema deve possibilitar a identificação de qual máquina executou o trabalho (CNC, Torno).                                       | Alta       |
-| RF-06   | O sistema deve possibilitar segregação de acesso a páginas de acordo com os perfis de usuários.                                     | Alta       |
-| RF-07   | O sistema deve permitir o setor administrativo criar o orçamento da peça dentro da plataforma.                                      | Média      |
-| RF-08   | O sistema deve permitir que o setor administrativo ajuste os custos fixos como água, luz, internet, pastilhas e hora máquina.       | Média      |
-| RF-09   | O sistema deve permitir a apresentação de gráficos da fila de produção atual                                                        | Média      |
-| RF-10   | O sistema deve permitir acesso ao tutorial de como usar o aplicativo                                                                | Média      |
-| RF-11   | O sistema deve conseguir salvar os resultados anteriores e criar filtros para exibir em gráficos esses resultados.                  | Média      |
-| RF-12   | O sistema deve permitir que o colaborador registre uma manutenção inesperada.                                                       | Média      |
-| RF-13   | O sistema deve permitir a exportação de logs, para saber o que foi feito e por quem dentro da aplicação.                            | Baixa      |
+| RF-01   | O sistema deve possibilitar o cadastro de novos colaboradores dos setores da produção e administração.                              | Alta    | 
+| RF-02   | O sistema deve permitir que um torneiro inicie, pause e conclua o tempo de produção de uma determinada peça.                        | Alta    |
+| RF-03   | O sistema deve possibilitar a administração programar uma fila de produção com base na sua categoria (crítica, alta, média, normal).                                                                                                                                        | Alta    |
+| RF-04   | O sistema deve possibilitar que o cliente ou colaborador adicione anotações para melhorar o gerenciamento.                         | Alta    |
+| RF-05   | O sistema deve possibilitar a identificação de qual máquina executou o trabalho (CNC, Torno).                                       | Alta    |
+| RF-06   | O sistema deve possibilitar segregação de acesso a páginas de acordo com os perfis de usuários.                                     | Alta    |
+| RF-07   | O sistema deve permitir o setor administrativo criar o orçamento da peça dentro da plataforma.                                      | Média   |
+| RF-08   | O sistema deve permitir que os colaboradores vejam um relatório de pedidos detalhatamente                                          | Média   |
+| RF-09   | O sistema deve permitir a apresentação de gráficos da fila de produção atual                                                        | Média   |
+| RF-10   | O sistema deve possibilitar a pesquisa de uma aba dentro do menu para uma melhor visualização                                       | Média   |
+| RF-11   | O sistema deve possuir uma barra de pesquisa nas abas do sistea para uma melhor busca de produtors ou máquinas                     | Média   |
+| RF-12   | O sistema deve possibilitar uma personalização adequada para cada cliente ou colaborador(Cor, logo e tema)                          | Média   |
+| RF-13   | O sistema deve possibilitar o usuário verificar se o produto causou lucro ou perda diretamente após a finalização do serviço        | Baixa   |
 
 
 
@@ -126,19 +126,19 @@
 
 | ID    | Description                                                                                                                                              | Priority |
 | ----- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| FR-01 | The system must allow the registration of new employees from both production and administrative departments.                                             | High     |
-| FR-02 | The system must allow a machinist to start, pause, and complete the production time tracking of a specific part.                                         | High     |
-| FR-03 | The system must allow administrators to schedule a production queue based on priority categories (critical, high, medium, and normal).                   | High     |
-| FR-04 | The system must allow administrators to identify which parts generated profit or loss during production.                                                 | High     |
-| FR-05 | The system must identify which machine performed the work (CNC machine or lathe).                                                                        | High     |
-| FR-06 | The system must provide role-based access control according to user profiles.                                                                            | High     |
-| FR-07 | The system must allow the administrative department to create production estimates within the platform.                                                  | Medium   |
-| FR-08 | The system must allow the administrative department to adjust fixed costs such as water, electricity, internet, cutting inserts, and machine-hour rates. | Medium   |
-| FR-09 | The system must provide graphical representations of the current production queue.                                                                       | Medium   |
-| FR-10 | The system must provide access to a tutorial explaining how to use the application.                                                                      | Medium   |
-| FR-11 | The system must save historical production data and provide filters for displaying this information through reports and charts.                          | Medium   |
-| FR-12 | The system must allow employees to register unexpected maintenance events.                                                                               | Medium   |
-| FR-13 | The system must allow the export of activity logs, making it possible to identify what actions were performed and by whom within the application.        | Low      |
+| FR-01  | The system must allow the registration of new employees from both production and administrative departments.                         | High   |
+| FR-02  | The system must allow a machinist to start, pause, and complete the production time tracking of a specific part.                     | High   |
+| FR-03  | The system must allow administrators to schedule a production queue based on priority categories (critical, high, medium, and normal).                                                                                                                                       | High   |
+| FR-04  | The system should allow the client or collaborator to add notes to improve management.                                               | High   |
+| FR-05  | The system must identify which machine performed the work (CNC machine or lathe).                                                    | High   |
+| FR-06  | The system must provide role-based access control according to user profiles.                                                        | High   |
+| FR-07  | The system must allow the administrative department to create production estimates within the platform.                              | Medium |
+| FR-08  | The system should allow employees to view a detailed order report.                                                                   | Medium |
+| FR-09  | The system must provide graphical representations of the current production queue.                                                   | Medium |
+| FR-10  | The system should allow searching within a tab of the menu for better visualization.                                                 | Medium |
+| FR-11  | The system should have a search bar in the system tabs for better searching of producers or machines.                                | Medium |
+| FR-12  | The system must allow employees to register unexpected maintenance events.                                                           | Medium   |
+| FR-13 | The system should allow the user to verify whether the product generated profit or loss directly after the service is completed.      | Low      |
 
 ### Non-Functional Requirements
 
