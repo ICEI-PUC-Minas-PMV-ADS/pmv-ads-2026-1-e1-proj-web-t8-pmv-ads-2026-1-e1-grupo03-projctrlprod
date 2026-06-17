@@ -97,6 +97,13 @@
 
 ### Requisitos não Funcionais
 
+|ID      | Descrição                                                                                       |Prioridade |
+|--------|-------------------------------------------------------------------------------------------------|-----------|
+| RNF-01 | O sistema deve ser desenvolvido em HTML, CSS e JS.                                              | Alta      | 
+| RNF-02 | O sistema deve estar disponível na WEB.                                                         | Alta      | 
+| RNF-03 | O sistema deve ser responsivo.                                                                  | Alta      | 
+| RNF-04 | O sistema deve ser compatível com os principais navegadores do mercado (Firefox, Chrome, Edge)  | Alta      | 
+| RNF-05 | O sistema deve utilizar armazenamento local do navegador.                                       | Alta      | 
 
 # Project Specification
 
@@ -149,12 +156,3 @@
 | NFR-03 | The system must be responsive.                                                                       | High     |
 | NFR-04 | The system must be compatible with the major web browsers on the market (Firefox, Chrome, and Edge). | High     |
 | NFR-05 | The system must use the browser's local storage for data persistence.                                | High     |
-
-
-|ID      | Descrição                                                                                       |Prioridade |
-|--------|-------------------------------------------------------------------------------------------------|-----------|
-| RNF-01 | O sistema deve ser desenvolvido em HTML, CSS e JS.                                              | Alta      | 
-| RNF-02 | O sistema deve estar disponível na WEB.                                                         | Alta      | 
-| RNF-03 | O sistema deve ser responsivo.                                                                  | Alta      | 
-| RNF-04 | O sistema deve ser compatível com os principais navegadores do mercado (Firefox, Chrome, Edge)  | Alta      | 
-| RNF-05 | O sistema deve utilizar armazenamento local do navegador.                                       | Alta      | 
