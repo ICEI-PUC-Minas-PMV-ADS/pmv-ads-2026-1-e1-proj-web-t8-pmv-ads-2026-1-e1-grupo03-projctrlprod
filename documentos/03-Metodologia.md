@@ -113,7 +113,7 @@ A utilização dessas etiquetas contribui para uma melhor organização do quadr
 | Documentos do projeto               | GitHub                             |https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2026-1-e1-proj-web-t8-pmv-ads-2026-1-e1-grupo03-projctrlprod/tree/main/documentos    |
 | Projeto de Interface                | Figma                              |https://www.figma.com/team_invite/redeem/eqJNqFrdAgTTGmxuBP331L?t=YUOXTjwklfpciTts-22                                                  |
 | Gerenciamento do Projeto            | GitHub Projects                    |https://github.com/orgs/ICEI-PUC-Minas-PMV-SI/projects/402/views/1                                                                     |
-| Hospedagem                          | GitHub Pages                       | http://....                            |
+| Hospedagem                          | GitHub Pages                       |https://usinagenspro-3bdaa.web.app/index.html|
 
 
 ### Estratégia de Organização de Codificação 
