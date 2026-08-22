@@ -33,9 +33,16 @@ Clóvis Lemos Tavares
 <li><a href="documentos/07-Referências Bibliográficas.md"> Referências Bibliográficas</a></li>
 </ol>
 
-# Hospedagem
+## Instruções de Instalação, Execução e Acesso
 
-A aplicação desenvolvida está disponível na web e pode ser acessada <a href="https://icei-puc-minas-pmv-ads.github.io/pmv-ads-2026-1-e1-proj-web-t8-pmv-ads-2026-1-e1-grupo03-projctrlprod/index.html"> aqui</a>.
+**Hospedagem:**
+* URL da aplicação: <a href="https://icei-puc-minas-pmv-ads.github.io/pmv-ads-2026-1-e1-proj-web-t8-pmv-ads-2026-1-e1-grupo03-projctrlprod/index.html">
+* Status: online 
+* Ambiente: público para uso
+
+**Usuário(s) de teste:**
+* Login: admin
+* Senha: admin
 
 # Código-Fonte
 
@@ -58,7 +65,11 @@ Our system was developed as a technological solution capable of organizing and m
 
 ## Team Members
 
-*(Insert team members here.)*
+<p>Gustavo Henrique Carvalho Ferreira</p>
+<p>João Lucas Piza Silva</p>
+<p>Kaique Silveira Sampaio</p>
+<p>Kaique Gabriel da Silva Paiva</p>
+<p>Luiz Miguel de Lira Sá</p>
 
 ## Advisor
 
@@ -66,18 +77,30 @@ Our system was developed as a technological solution capable of organizing and m
 
 # Documentation
 
-*(Project documentation can be inserted in this section.)*
+<ol>
+<li><a href="documentos/01-Documentação de Contexto.md"> Context Documentation</a></li>
+<li><a href="documentos/02-Especificação do Projeto.md"> Project Specification</a></li>
+<li><a href="documentos/03-Metodologia.md"> Methodology</a></li>
+<li><a href="documentos/04-Projeto de Interface.md"> Interface Design</a></li>
+<li><a href="documentos/05-Template padrão da Aplicação.md"> Application Template</a></li>
+<li><a href="documentos/06-Programação de Funcionalidades.md"> Functionality Implementation</a></li>
+<li><a href="documentos/07-Referências Bibliográficas.md"> References</a></li>
+</ol>
 
-# Deployment
+# Deployment and Instructions for access and execution
 
-The developed application is available on the web and can be accessed **here**:
+* Application URL: <a href="https://icei-puc-minas-pmv-ads.github.io/pmv-ads-2026-1-e1-proj-web-t8-pmv-ads-2026-1-e1-grupo03-projctrlprod/index.html">
+* Status: online 
+* Environment: in use for the public
 
-https://icei-puc-minas-pmv-ads.github.io/pmv-ads-2026-1-e1-proj-web-t8-pmv-ads-2026-1-e1-grupo03-projctrlprod/index.html
+**Test Users:**
+* Login: admin
+* Password: admin
 
 # Source Code
 
-* Source Code
+*  <a href="codigo-fonte/README.md">Source Code</a>
 
 # Presentation
 
-* Project Presentation
+* <a href="apresentacao/README.md">Presentation</a>
