@@ -36,7 +36,7 @@ Clóvis Lemos Tavares
 ## Instruções de Instalação, Execução e Acesso
 
 **Hospedagem:**
-* URL da aplicação: <a href="https://icei-puc-minas-pmv-ads.github.io/pmv-ads-2026-1-e1-proj-web-t8-pmv-ads-2026-1-e1-grupo03-projctrlprod/index.html">
+* <a href="https://icei-puc-minas-pmv-ads.github.io/pmv-ads-2026-1-e1-proj-web-t8-pmv-ads-2026-1-e1-grupo03-projctrlprod/index.html"> Acesso à aplicação</a>
 * Status: online 
 * Ambiente: público para uso
 
@@ -89,7 +89,7 @@ Our system was developed as a technological solution capable of organizing and m
 
 # Deployment and Instructions for access and execution
 
-* Application URL: <a href="https://icei-puc-minas-pmv-ads.github.io/pmv-ads-2026-1-e1-proj-web-t8-pmv-ads-2026-1-e1-grupo03-projctrlprod/index.html">
+* <a href="https://icei-puc-minas-pmv-ads.github.io/pmv-ads-2026-1-e1-proj-web-t8-pmv-ads-2026-1-e1-grupo03-projctrlprod/index.html">Application link</a>
 * Status: online 
 * Environment: in use for the public
 
